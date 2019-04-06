@@ -37,7 +37,7 @@ namespace FirstBot.Model
         {
             var newLocation = currentLocation.Plus (Constants.Deltas[direction]);
 
-            var newCell = neighbourCells.First (cell => cell.Item1 == newLocation);
+            var newCell = neighbourCells.First (cell => cell.Item1.Equals(newLocation));
 
             return newCell;
         }

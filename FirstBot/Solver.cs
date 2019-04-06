@@ -17,6 +17,9 @@ namespace FirstBot
             Location currentLocation = info.CurrentLocation;
             if (turn != null)
                 currentLocation = turn.Location;
+            var sosedi = info.NeighbourCells;
+            if (turn != null)
+                sosedi = turn.VisibleCells;
 
             var checker = new MovementChecker();
 
@@ -25,16 +28,14 @@ namespace FirstBot
             var array = dict.ToArray().ToList();
             array.Sort((a, b) =>
             {
-                if (a.Key < b.Key) return -1;
-                if (a.Key > b.Key) return 1;
+                if (a.Value < b.Value) return -1;
+                if (a.Value > b.Value) return 1;
                 return 0;
             });
-            var sorted = dict.Values.ToList();
-
-            sorted.Sort();
+            
             foreach (var cur in array)
             {
-                if (checker.CanMove(cur.Key, currentLocation, info))
+                if (checker.CanMove(cur.Key, currentLocation, sosedi, 4))
                     return cur.Key;
             }
 
