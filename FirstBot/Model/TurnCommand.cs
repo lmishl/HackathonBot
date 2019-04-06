@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
+using static IO.Swagger.Model.TurnModel;
+using FirstBot.Model;
 
 namespace IO.Swagger.Model
 {
@@ -30,55 +32,13 @@ namespace IO.Swagger.Model
     [DataContract]
     public partial class TurnCommand :  IEquatable<TurnCommand>, IValidatableObject
     {
-        /// <summary>
-        /// Defines MovementDirection
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum MovementDirectionEnum
-        {
-            
-            /// <summary>
-            /// Enum West for value: West
-            /// </summary>
-            [EnumMember(Value = "West")]
-            West = 1,
-            
-            /// <summary>
-            /// Enum NorthWest for value: NorthWest
-            /// </summary>
-            [EnumMember(Value = "NorthWest")]
-            NorthWest = 2,
-            
-            /// <summary>
-            /// Enum NorthEast for value: NorthEast
-            /// </summary>
-            [EnumMember(Value = "NorthEast")]
-            NorthEast = 3,
-            
-            /// <summary>
-            /// Enum East for value: East
-            /// </summary>
-            [EnumMember(Value = "East")]
-            East = 4,
-            
-            /// <summary>
-            /// Enum SouthEast for value: SouthEast
-            /// </summary>
-            [EnumMember(Value = "SouthEast")]
-            SouthEast = 5,
-            
-            /// <summary>
-            /// Enum SouthWest for value: SouthWest
-            /// </summary>
-            [EnumMember(Value = "SouthWest")]
-            SouthWest = 6
-        }
+       
 
         /// <summary>
         /// Gets or Sets MovementDirection
         /// </summary>
         [DataMember(Name="MovementDirection", EmitDefaultValue=false)]
-        public MovementDirectionEnum? MovementDirection { get; set; }
+        public DirectionEnum? MovementDirection { get; set; }
         /// <summary>
         /// Defines Heading
         /// </summary>
@@ -137,7 +97,7 @@ namespace IO.Swagger.Model
         /// <param name="heading">heading.</param>
         /// <param name="speed">speed.</param>
         /// <param name="fuel">fuel.</param>
-        public TurnCommand(Location location = default(Location), int? acceleration = default(int?), MovementDirectionEnum? movementDirection = default(MovementDirectionEnum?), HeadingEnum? heading = default(HeadingEnum?), int? speed = default(int?), int? fuel = default(int?))
+        public TurnCommand(Location location = default(Location), int? acceleration = default(int?), DirectionEnum? movementDirection = default(DirectionEnum?), HeadingEnum? heading = default(HeadingEnum?), int? speed = default(int?), int? fuel = default(int?))
         {
             this.Location = location;
             this.Acceleration = acceleration;

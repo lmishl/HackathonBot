@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
+using static IO.Swagger.Model.TurnModel;
+using FirstBot.Model;
 
 namespace IO.Swagger.Model
 {
@@ -30,55 +32,13 @@ namespace IO.Swagger.Model
     [DataContract]
     public partial class PlayerSessionInfo :  IEquatable<PlayerSessionInfo>, IValidatableObject
     {
-        /// <summary>
-        /// Defines CurrentDirection
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum CurrentDirectionEnum
-        {
-            
-            /// <summary>
-            /// Enum West for value: West
-            /// </summary>
-            [EnumMember(Value = "West")]
-            West = 1,
-            
-            /// <summary>
-            /// Enum NorthWest for value: NorthWest
-            /// </summary>
-            [EnumMember(Value = "NorthWest")]
-            NorthWest = 2,
-            
-            /// <summary>
-            /// Enum NorthEast for value: NorthEast
-            /// </summary>
-            [EnumMember(Value = "NorthEast")]
-            NorthEast = 3,
-            
-            /// <summary>
-            /// Enum East for value: East
-            /// </summary>
-            [EnumMember(Value = "East")]
-            East = 4,
-            
-            /// <summary>
-            /// Enum SouthEast for value: SouthEast
-            /// </summary>
-            [EnumMember(Value = "SouthEast")]
-            SouthEast = 5,
-            
-            /// <summary>
-            /// Enum SouthWest for value: SouthWest
-            /// </summary>
-            [EnumMember(Value = "SouthWest")]
-            SouthWest = 6
-        }
+     
 
         /// <summary>
         /// Gets or Sets CurrentDirection
         /// </summary>
         [DataMember(Name="CurrentDirection", EmitDefaultValue=false)]
-        public CurrentDirectionEnum? CurrentDirection { get; set; }
+        public DirectionEnum? CurrentDirection { get; set; }
         /// <summary>
         /// Defines PlayerStatus
         /// </summary>

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using FirstBot.Model;
 using IO.Swagger.Model;
 using Newtonsoft.Json;
 using static IO.Swagger.Model.TurnModel;
@@ -37,11 +38,11 @@ namespace FirstBot
             return playerSessionInfo;
         }
 
-        public async Task<TurnResult> Move (string sessionId, DirectionEnum dirrection, int acceleration)
+        public async Task<TurnResult> Move (string sessionId, DirectionEnum direction, int acceleration)
         {
              var uri = $"{ServerName}/raceapi/race/{sessionId}";
 
-             var turnModel = new TurnModel(dirrection, acceleration);
+             var turnModel = new TurnModel(direction, acceleration);
 
              var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToJson()));
          

@@ -1,28 +1,26 @@
-﻿using IO.Swagger.Model;
+﻿using FirstBot.Model;
+using IO.Swagger.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static IO.Swagger.Model.TurnCommand;
+using static IO.Swagger.Model.TurnModel;
 
 namespace FirstBot
 {
     public class Сompass
     {
-        public Dictionary<double, MovementDirectionEnum> GetDirection(Location location, PlayerSessionInfo sessionInfo)
+        public Dictionary<double, DirectionEnum> GetDirection(Location location, PlayerSessionInfo sessionInfo)
         {
-            var dict = new Dictionary<double, MovementDirectionEnum>();
+            var dict = new Dictionary<double, DirectionEnum>();
             foreach (var pair in Constants.Deltas)
             {
                 dict.Add(Absolut(location.Plus(pair.Value), sessionInfo.Finish), pair.Key);
             }
 
             return dict;
-
             
-
-
-
         }
 
 
