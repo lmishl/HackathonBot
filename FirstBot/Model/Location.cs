@@ -49,6 +49,7 @@ namespace IO.Swagger.Model
         //}
 
 
+
         public Location Minus(Location location) =>
                new Location
                {
