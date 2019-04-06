@@ -53,6 +53,19 @@ namespace FirstBot
              return turnResult;
         }
 
+        public async Task<PlayerSessionInfo> GetCurrentState (string sessionId)
+        {
+             var uri = $"{ServerName}/raceapi/race/?sessionId={sessionId}";
+
+             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Get, null));
+         
+             var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
+
+             var playerSessionInfo = JsonConvert.DeserializeObject<PlayerSessionInfo>(playerSessionInfoJson); 
+
+             return playerSessionInfo;
+        }
+
         private HttpRequestMessage CreateHttpRequest(string uri, HttpMethod method, string content )
         {
             return new HttpRequestMessage
