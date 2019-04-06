@@ -9,9 +9,11 @@ namespace Templates
     public class Map
     {
         private readonly Dictionary<HexCoordinates, HexType> _allCells;
+        private readonly byte _radius;
 
         public Map(byte radius)
         {
+            _radius = radius;
             int total = 3 * radius * (radius - 1) + 1;
             _allCells = new Dictionary<HexCoordinates, HexType>(total);
             int start = radius - 1;
@@ -44,7 +46,34 @@ namespace Templates
 
             if (_allCells.Count != total)
                 new Exception("Invalid amount of hexagon cells");
-
         }
+
+        public HexCell GetCell(HexCoordinates startingPoint)
+        {
+            return new HexCell(startingPoint, _allCells);
+        }
+
+        public void FrameWithRocks()
+        {
+            int maxVal = _radius - 1;
+            foreach (HexCoordinates coord in  _allCells.Keys)
+            {
+                if (Math.Abs(coord.X) == maxVal || Math.Abs(coord.Y) == maxVal || Math.Abs(coord.Z) == maxVal)
+                {
+                    _allCells[coord] = HexType.Rock;
+                }
+            }
+        }
+
+        public bool ChangeCellState(HexCoordinates existingCoord, HexType newState)
+        {
+            if (_allCells.ContainsKey(existingCoord))
+            {
+                _allCells[existingCoord] = newState;
+                return true;
+            }
+            return false;
+        }
+
     }
 }

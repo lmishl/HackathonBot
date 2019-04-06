@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
+using Templates;
 
 namespace IO.Swagger.Model
 {
@@ -175,6 +176,11 @@ namespace IO.Swagger.Model
         IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
+        }
+
+        public HexCoordinates ConvertToHex()
+        {
+            return new HexCoordinates(Convert.ToInt16(X), Convert.ToInt16(Y), Convert.ToInt16(Z));
         }
     }
 

@@ -8,16 +8,20 @@ namespace Templates
 {
     public class Racer
     {
-        public HexCoordinates Location { get; private set; }
+        public HexCell Position { get; private set; }
         private string _state;
-        private byte _fuel;
+        private int _fuel;
+        private readonly Map _fullMap; 
 
-        public Racer(HexCoordinates startingPoint, byte startingFuel)
+        public Racer(HexCoordinates startingPoint, int startingFuel, Map map)
         {
-            Location = startingPoint;
+            //Location = startingPoint;
             _state = Condition.NotBad;
+            _fullMap = map;
+
+            _fullMap.FrameWithRocks();
+            _fullMap.ChangeCellState(startingPoint, HexType.Empty);
+            Position = _fullMap.GetCell(startingPoint);        
         }
-
-
     }
 }
