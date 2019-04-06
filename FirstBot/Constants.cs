@@ -12,6 +12,7 @@ namespace FirstBot
     {
         static Constants()
         {
+            Deltas = new Dictionary<DirectionEnum, Location>();
             Deltas.Add(DirectionEnum.East, new Location(1,-1,0));
             Deltas.Add(DirectionEnum.West, new Location(-1, 1, 0));
             Deltas.Add(DirectionEnum.NorthEast, new Location(1, 0, -1));
