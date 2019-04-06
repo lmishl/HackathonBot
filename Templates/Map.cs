@@ -8,7 +8,7 @@ namespace Templates
 {
     public class Map
     {
-        private readonly Dictionary<HexCoordinates, HexType> _allCells;
+        public readonly Dictionary<HexCoordinates, HexType> _allCells;
         private readonly byte _radius;
 
         public Map(byte radius)
@@ -56,12 +56,10 @@ namespace Templates
         public void FrameWithRocks()
         {
             int maxVal = _radius - 1;
-            foreach (HexCoordinates coord in  _allCells.Keys)
+            foreach (var key in _allCells.Keys.ToList())
             {
-                if (Math.Abs(coord.X) == maxVal || Math.Abs(coord.Y) == maxVal || Math.Abs(coord.Z) == maxVal)
-                {
-                    _allCells[coord] = HexType.Rock;
-                }
+                if (Math.Abs(key.X) == maxVal || Math.Abs(key.Y) == maxVal || Math.Abs(key.Z) == maxVal)
+                    _allCells[key] = HexType.Rock;                  
             }
         }
 

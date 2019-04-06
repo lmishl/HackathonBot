@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Templates
 {
@@ -36,6 +37,15 @@ namespace Templates
                     }
                 }       
             }
+        }
+
+        public float DistanceTo(HexCell targetCell)
+        {
+            float deltaX = targetCell.Position.X - Position.X;
+            float deltaY = targetCell.Position.Y - Position.Y;
+            float deltaZ = targetCell.Position.Z - Position.Z;
+
+            return (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
         }
     }
 }
