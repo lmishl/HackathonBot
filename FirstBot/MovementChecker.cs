@@ -50,7 +50,7 @@ namespace FirstBot.Model
 
                 var neededAcceleration = Constants.MinCanyonSpeed - speed;
                 
-                if (neededAcceleration> Constants.MaxAcceleration)
+                if (neededAcceleration > Constants.MaxAcceleration)
                 {
                     return NoMove ();
                 }
@@ -59,8 +59,6 @@ namespace FirstBot.Model
                 {
                     return Move (neededAcceleration);
                 }
-
-                return NoMove ();
             }
 
             return Move ();
