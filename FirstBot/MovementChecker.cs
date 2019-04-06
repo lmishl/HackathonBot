@@ -32,24 +32,6 @@ namespace FirstBot.Model
                 return NoMove ();
             }
 
-            if (speed != Constants.OurMustSped)
-            {
-                if (speed > Constants.OurMustSped)
-                {
-                    neededAcceleration = speed - Constants.OurMustSped >= Constants.MaxAcceleration
-                    ? Constants.MaxAcceleration 
-                    : speed - Constants.OurMustSped;
-                    return Move (neededAcceleration);
-                }
-                if (speed < Constants.OurMustSped)
-                {
-                    neededAcceleration = Constants.OurMustSped - speed <= Constants.MaxAcceleration
-                    ? Constants.OurMustSped - speed
-                    : Constants.MaxAcceleration;
-                    return Move (neededAcceleration);
-                }
-            }
-
             // только горы
             if (newCell.Item2.Value == Item2Enum.Rock)
             {
@@ -94,7 +76,25 @@ namespace FirstBot.Model
                     return Move (Constants.MaxDuneSpeed - speed);
                 }
 
-                var neededAcceleration = Constants.MinCanyonSpeed - speed;
+                neededAcceleration = Constants.MinCanyonSpeed - speed;
+            }
+
+            if (speed != Constants.OurMustSped)
+            {
+                if (speed > Constants.OurMustSped)
+                {
+                    neededAcceleration = speed - Constants.OurMustSped >= Constants.MaxAcceleration
+                        ? Constants.MaxAcceleration
+                        : speed - Constants.OurMustSped;
+                    return Move (neededAcceleration);
+                }
+                if (speed < Constants.OurMustSped)
+                {
+                    neededAcceleration = Constants.OurMustSped - speed <= Constants.MaxAcceleration
+                        ? Constants.OurMustSped - speed
+                        : Constants.MaxAcceleration;
+                    return Move (neededAcceleration);
+                }
             }
 
             return Move ();
