@@ -28,7 +28,7 @@ namespace IO.Swagger.Model
     /// Location
     /// </summary>
     [DataContract]
-    public partial class Location :  IEquatable<Location>, IValidatableObject
+    public partial class Location : IEquatable<Location>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Location" /> class.
@@ -37,24 +37,52 @@ namespace IO.Swagger.Model
         public Location()
         {
         }
-        
+        public Location(int x, int y, int z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        //public static Location operator -(Location location) {
+        //    return this.M
+        //}
+
+
+        public Location Minus(Location location) =>
+               new Location
+               {
+                   X = this.X - location.X,
+                   Y = this.Y - location.Y,
+                   Z = this.Z - location.Z
+               };
+
+        public Location Plus(Location location) =>
+                 new Location
+                 {
+                     X = this.X + location.X,
+                     Y = this.Y + location.Y,
+                     Z = this.Z + location.Z
+                 };
+
+
         /// <summary>
         /// Gets or Sets X
         /// </summary>
-        [DataMember(Name="X", EmitDefaultValue=false)]
-        public int? X { get;  set; }
+        [DataMember(Name = "X", EmitDefaultValue = false)]
+        public int? X { get; set; }
 
         /// <summary>
         /// Gets or Sets Y
         /// </summary>
-        [DataMember(Name="Y", EmitDefaultValue=false)]
-        public int? Y { get;  set; }
+        [DataMember(Name = "Y", EmitDefaultValue = false)]
+        public int? Y { get; set; }
 
         /// <summary>
         /// Gets or Sets Z
         /// </summary>
-        [DataMember(Name="Z", EmitDefaultValue=false)]
-        public int? Z { get;  set; }
+        [DataMember(Name = "Z", EmitDefaultValue = false)]
+        public int? Z { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -70,7 +98,7 @@ namespace IO.Swagger.Model
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -100,17 +128,17 @@ namespace IO.Swagger.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.X == input.X ||
                     (this.X != null &&
                     this.X.Equals(input.X))
-                ) && 
+                ) &&
                 (
                     this.Y == input.Y ||
                     (this.Y != null &&
                     this.Y.Equals(input.Y))
-                ) && 
+                ) &&
                 (
                     this.Z == input.Z ||
                     (this.Z != null &&
