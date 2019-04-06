@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IO.Swagger.Model;
@@ -22,6 +23,8 @@ namespace FirstBot.Model
 
         public MovementState CanMoveWithPit (DirectionEnum direction, Location currentLocation, List<ValueTupleLocationSurfaceType> neighbourCells, int speed)
         {
+            int neededAcceleration;
+
             var newCell = GetNewCell (direction, currentLocation, neighbourCells);
 
             if (newCell == null || !newCell.Item2.HasValue)
@@ -38,18 +41,18 @@ namespace FirstBot.Model
             // только овраг и ускорение
             if (newCell.Item2.Value == Item2Enum.Pit)
             {
-                if (speed == 70)
+                if (speed == Constants.MinCanyonSpeed)
                 {
                     return Move ();
                 }
 
                 if (speed > Constants.MinCanyonSpeed)
                 {
-                    return Move(speed - Constants.MinCanyonSpeed);
+                    return Move (speed - Constants.MinCanyonSpeed);
                 }
 
-                var neededAcceleration = Constants.MinCanyonSpeed - speed;
-                
+                neededAcceleration = Constants.MinCanyonSpeed - speed;
+
                 if (neededAcceleration > Constants.MaxAcceleration)
                 {
                     return NoMove ();
@@ -57,6 +60,44 @@ namespace FirstBot.Model
 
                 if (neededAcceleration <= Constants.MaxAcceleration)
                 {
+                    return Move (neededAcceleration);
+                }
+            }
+
+            if (newCell.Item2.Value == Item2Enum.DangerousArea)
+            {
+                if (speed <= Constants.MaxDuneSpeed)
+                {
+                    return Move ();
+                }
+
+                neededAcceleration = speed - Constants.MinCanyonSpeed;
+
+                if (neededAcceleration <= Constants.MaxAcceleration)
+                {
+                    return Move (neededAcceleration);
+                }
+
+                if (neededAcceleration > Constants.MaxAcceleration)
+                {
+                    return NoMove ();
+                }
+            }
+
+            if (speed != Constants.OurMustSped)
+            {
+                if (speed > Constants.OurMustSped)
+                {
+                    neededAcceleration = speed - Constants.OurMustSped >= Constants.MaxAcceleration
+                        ? Constants.MaxAcceleration
+                        : speed - Constants.OurMustSped;
+                    return Move (neededAcceleration);
+                }
+                if (speed < Constants.OurMustSped)
+                {
+                    neededAcceleration = Constants.OurMustSped - speed <= Constants.MaxAcceleration
+                        ? Constants.OurMustSped - speed
+                        : Constants.MaxAcceleration;
                     return Move (neededAcceleration);
                 }
             }
@@ -91,7 +132,7 @@ namespace FirstBot.Model
             return new MovementState
             {
                 IsCanMove = false,
-                Acceleration = 0
+                    Acceleration = 0
             };
         }
 
@@ -99,8 +140,8 @@ namespace FirstBot.Model
         {
             return new MovementState
             {
-                IsCanMove = true,
-                Acceleration = acceleration
+            IsCanMove = true,
+            Acceleration = acceleration
             };
         }
     }
