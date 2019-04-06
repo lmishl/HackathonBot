@@ -72,7 +72,7 @@ namespace FirstBot
             {
                 RequestUri = new Uri(uri),
                 Method = method,
-                Content = new StringContent(content, Encoding.UTF8, "application/json"),
+                Content = null,// new StringContent(content, Encoding.UTF8, "application/json"),
                 Headers = { { "Authorization", $"{Authorization}" } }
             };
         }
