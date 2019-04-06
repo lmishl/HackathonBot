@@ -42,19 +42,19 @@ namespace IO.Swagger.Model
         /// Gets or Sets X
         /// </summary>
         [DataMember(Name="X", EmitDefaultValue=false)]
-        public int? X { get; private set; }
+        public int? X { get;  set; }
 
         /// <summary>
         /// Gets or Sets Y
         /// </summary>
         [DataMember(Name="Y", EmitDefaultValue=false)]
-        public int? Y { get; private set; }
+        public int? Y { get;  set; }
 
         /// <summary>
         /// Gets or Sets Z
         /// </summary>
         [DataMember(Name="Z", EmitDefaultValue=false)]
-        public int? Z { get; private set; }
+        public int? Z { get;  set; }
 
         /// <summary>
         /// Returns the string presentation of the object
