@@ -14,7 +14,7 @@ namespace FirstBot
             var turnResult = service.Move(info.SessionId, solver.Solve(info, null), 30).Result;
             while (turnResult.Status != StatusEnum.HappyAsInsane && turnResult.Status != StatusEnum.Punished)
             {
-                turnResult = service.Move(info.SessionId, solver.Solve(info, turnResult), turnResult.Speed>50? 30:-30).Result;
+                turnResult = service.Move(info.SessionId, solver.Solve2(info, turnResult), turnResult.Speed>50? -30:30).Result;
                 info = service.GetCurrentState(info.SessionId).Result;
             }
         }
