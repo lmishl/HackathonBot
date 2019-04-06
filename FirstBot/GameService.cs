@@ -11,7 +11,7 @@ namespace FirstBot
 {
     public class GameService
     {
-        private HttpClient client {get; set;}
+        private HttpClient client {get; }
 
         private const string ServerName = "http://51.15.100.12:5000";
 
@@ -43,7 +43,7 @@ namespace FirstBot
 
              var turnModel = new TurnModel(dirrection, acceleration);
 
-            var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToString()));
+             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToString()));
          
              var turnResultJson = await response.Content.ReadAsStringAsync();
 
