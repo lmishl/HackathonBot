@@ -12,9 +12,9 @@ namespace FirstBot
 {
     public class GameService
     {
-        private HttpClient client {get; set; }
+        private HttpClient client { get; set; }
 
-        private const string ServerName = "http://127.0.0.1:5000";
+        private const string ServerName = "http://127.0.0.1:5000";//"http://51.15.100.12:5000"; //
 
         private const string Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFcnpoYW5HZXRVcCIsImp0aSI6IjRkMWY4ODkxLWNkZmEtNDBlOS05N2ZmLWMxMmYwNWRhZmU4MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiYWJjNTJhMWEtNDQ3Yi00ZWFjLTg4NzQtMmZhOWRmOGFlMTM0Iiwicm9sIjoiYXBpX2FjY2VzcyIsImV4cCI6MTU1NzEzMTQ3NSwiaXNzIjoibXNrZG90bmV0IiwiYXVkIjoibXNrZG90bmV0In0.gorYhnqPilzcAK0xjbbXhAWKQcfxgx8UM04orx1jadk";
 
@@ -33,46 +33,47 @@ namespace FirstBot
 
             var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
 
-            var playerSessionInfo = JsonConvert.DeserializeObject<PlayerSessionInfo>(playerSessionInfoJson); 
+            var playerSessionInfo = JsonConvert.DeserializeObject<PlayerSessionInfo>(playerSessionInfoJson);
 
             return playerSessionInfo;
         }
 
-        public async Task<TurnResult> Move (string sessionId, DirectionEnum direction, int acceleration)
+        public async Task<TurnResult> Move(string sessionId, DirectionEnum direction, int acceleration)
         {
-             var uri = $"{ServerName}/raceapi/race/{sessionId}";
+            var uri = $"{ServerName}/raceapi/race/{sessionId}";
 
-             var turnModel = new TurnModel(direction, acceleration);
+            var turnModel = new TurnModel(direction, acceleration);
 
-             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToJson()));
-         
-             var turnResultJson = await response.Content.ReadAsStringAsync();
+            var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToJson()));
 
-             var turnResult = JsonConvert.DeserializeObject<TurnResult>(turnResultJson); 
+            var turnResultJson = await response.Content.ReadAsStringAsync();
 
-             return turnResult;
+            var turnResult = JsonConvert.DeserializeObject<TurnResult>(turnResultJson);
+
+            return turnResult;
         }
 
-        public async Task<PlayerSessionInfo> GetCurrentState (string sessionId)
+        public async Task<PlayerSessionInfo> GetCurrentState(string sessionId)
         {
-             var uri = $"{ServerName}/raceapi/race/?sessionId={sessionId}";
+            var uri = $"{ServerName}/raceapi/race/?sessionId={sessionId}";
 
-             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Get, ""));
-         
-             var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
+            var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Get, ""));
 
-             var playerSessionInfo = JsonConvert.DeserializeObject<PlayerSessionInfo>(playerSessionInfoJson); 
+            var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
 
-             return playerSessionInfo;
+            var playerSessionInfo = JsonConvert.DeserializeObject<PlayerSessionInfo>(playerSessionInfoJson);
+
+            return playerSessionInfo;
         }
 
-        private HttpRequestMessage CreateHttpRequest(string uri, HttpMethod method, string content )
+        private HttpRequestMessage CreateHttpRequest(string uri, HttpMethod method, string content)
         {
+
             return new HttpRequestMessage
             {
                 RequestUri = new Uri(uri),
                 Method = method,
-                Content = null,// new StringContent(content, Encoding.UTF8, "application/json"),
+                Content = content == "" ? null : new StringContent(content, Encoding.UTF8, "application/json"),
                 Headers = { { "Authorization", $"{Authorization}" } }
             };
         }
