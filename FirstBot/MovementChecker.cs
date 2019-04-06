@@ -71,12 +71,17 @@ namespace FirstBot.Model
                     return Move ();
                 }
 
-                if (speed < Constants.MaxDuneSpeed)
+                neededAcceleration = speed - Constants.MinCanyonSpeed;
+
+                if (neededAcceleration <= Constants.MaxAcceleration)
                 {
-                    return Move (Constants.MaxDuneSpeed - speed);
+                    return Move (neededAcceleration);
                 }
 
-                neededAcceleration = Constants.MinCanyonSpeed - speed;
+                if (neededAcceleration > Constants.MaxAcceleration)
+                {
+                    return NoMove ();
+                }
             }
 
             if (speed != Constants.OurMustSped)
