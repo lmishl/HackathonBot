@@ -6,14 +6,14 @@ using System.Collections.Generic;
 
 namespace FirstBot
 {
-    public static class Сompass
+    public static class Compass
     {
-        public static Dictionary<double, DirectionEnum> GetDirection(Location location, PlayerSessionInfo sessionInfo)
+        public static Dictionary<DirectionEnum, double> GetDirection(Location location, PlayerSessionInfo sessionInfo)
         {
-            var dict = new Dictionary<double, DirectionEnum>();
+            var dict = new Dictionary<DirectionEnum, double>();
             foreach (var pair in Constants.Deltas)
             {
-                dict.Add(Absolut(location.Plus(pair.Value), sessionInfo.Finish), pair.Key);
+                dict.Add(pair.Key, Absolut(location.Plus(pair.Value), sessionInfo.Finish));
             }
 
             return dict;
