@@ -57,7 +57,7 @@ namespace FirstBot
         {
              var uri = $"{ServerName}/raceapi/race/?sessionId={sessionId}";
 
-             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Get, null));
+             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Get, ""));
          
              var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
 

@@ -12,9 +12,10 @@ namespace FirstBot
             var q = info.CurrentDirection;
             var solver = new Solver();
             var turnResult = service.Move(info.SessionId, solver.Solve(info, null), 30).Result;
-            while (turnResult.Status != StatusEnum.HappyAsInsane || turnResult.Status != StatusEnum.Punished)
+            while (turnResult.Status != StatusEnum.HappyAsInsane && turnResult.Status != StatusEnum.Punished)
             {
-                turnResult = service.Move(info.SessionId, solver.Solve(info, turnResult), 30).Result;
+                turnResult = service.Move(info.SessionId, solver.Solve(info, turnResult), turnResult.Speed>50? 30:-30).Result;
+                info = service.GetCurrentState(info.SessionId).Result;
             }
         }
        
