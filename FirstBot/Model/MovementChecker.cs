@@ -12,7 +12,7 @@ namespace FirstBot.Model
             var newCell = GetNewCell (direction, currentLocation, neighbourCells);
 
             // Горы
-            if (newCell.Item2.HasValue && newCell.Item2.Value == Item2Enum.Rock)
+            if (newCell == null && newCell.Item2.HasValue && newCell.Item2.Value == Item2Enum.Rock)
             {
                 return false;
             }
@@ -37,7 +37,7 @@ namespace FirstBot.Model
         {
             var newLocation = currentLocation.Plus (Constants.Deltas[direction]);
 
-            var newCell = neighbourCells.First (cell => cell.Item1.Equals(newLocation));
+            var newCell = neighbourCells.FirstOrDefault (cell => cell.Item1.Equals(newLocation));
 
             return newCell;
         }
