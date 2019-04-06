@@ -10,12 +10,19 @@ namespace Templates
         public HexCoordinates Position { get; }
         public HexType State { get; }
 
-        public HexCell(HexCoordinates pos, HexType state, IDictionary<HexCoordinates, HexType> allCells)
+        private HexCell(HexCoordinates pos, HexType state, IDictionary<HexCoordinates, HexType> allCells)
         {
             Position = pos;
             State = state;
             _allCells = allCells;
         }
+
+        public HexCell(HexCoordinates pos, IDictionary<HexCoordinates, HexType> allCells)
+        {
+            Position = pos;
+            _allCells = allCells;
+        }
+
 
         public IEnumerable<HexCell> AdjacentCells
         {
