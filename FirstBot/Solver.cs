@@ -10,7 +10,7 @@ namespace FirstBot
 {
     public class Solver
     {
-
+        DirectionEnum lastDir = DirectionEnum.West;
 
         public DirectionEnum Solve(PlayerSessionInfo info, TurnResult turn)
         {
@@ -38,6 +38,29 @@ namespace FirstBot
                 if (checker.CanMove(cur.Key, currentLocation, sosedi, 4))
                     return cur.Key;
             }
+
+            return DirectionEnum.East;
+
+        }
+
+        public DirectionEnum Solve2(PlayerSessionInfo info, TurnResult turn)
+        {
+            Location currentLocation = info.CurrentLocation;
+            if (turn != null)
+                currentLocation = turn.Location;
+            var sosedi = info.NeighbourCells;
+            if (turn != null)
+                sosedi = turn.VisibleCells;
+
+            var checker = new MovementChecker();
+
+            var dir = lastDir;
+            while (!checker.CanMove(dir, currentLocation, sosedi, 4))
+            {
+                dir = dir.Next();
+            }
+            return dir;
+            
 
             return DirectionEnum.East;
 

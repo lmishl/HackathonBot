@@ -51,4 +51,23 @@ namespace FirstBot.Model
         [EnumMember(Value = "SouthWest")]
         SouthWest = 6
     }
+
+    public static class DirectionEnumExtension
+    {
+        public static DirectionEnum Next(this DirectionEnum cur)
+        {
+            if (cur == DirectionEnum.West)
+                return DirectionEnum.NorthWest;
+            if (cur == DirectionEnum.NorthWest)
+                return DirectionEnum.NorthEast;
+            if (cur == DirectionEnum.NorthEast)
+                return DirectionEnum.East;
+            if (cur == DirectionEnum.East)
+                return DirectionEnum.SouthEast;
+            if (cur == DirectionEnum.SouthEast)
+                return DirectionEnum.SouthWest;
+
+            return DirectionEnum.West;
+        }
+    }
 }
