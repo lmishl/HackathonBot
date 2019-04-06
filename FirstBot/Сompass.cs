@@ -8,12 +8,12 @@ namespace FirstBot
 {
     public static class Compass
     {
-        public static Dictionary<DirectionEnum, double> GetDirection(Location location, PlayerSessionInfo sessionInfo)
+        public static Dictionary<DirectionEnum, double> GetDirection(Location location, Location finish)
         {
             var dict = new Dictionary<DirectionEnum, double>();
             foreach (var pair in Constants.Deltas)
             {
-                dict.Add(pair.Key, Absolut(location.Plus(pair.Value), sessionInfo.Finish));
+                dict.Add(pair.Key, Absolut(location.Plus(pair.Value), finish));
             }
 
             return dict;

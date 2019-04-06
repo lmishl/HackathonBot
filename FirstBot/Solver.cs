@@ -10,35 +10,39 @@ namespace FirstBot
 {
     public class Solver
     {
-        public DirectionEnum Solve(TurnResult turn)
+
+
+        public DirectionEnum Solve(PlayerSessionInfo info, TurnResult turn)
         {
-            return DirectionEnum.West;
-        }
+            Location currentLocation = info.CurrentLocation;
+            if (turn != null)
+                currentLocation = turn.Location;
 
-        public DirectionEnum Solve(PlayerSessionInfo info)
-        {
+            var checker = new MovementChecker();
 
+            var dict = Compass.GetDirection(currentLocation, info.Finish);
 
-
-            var dict = Compass.GetDirection(info.CurrentLocation, info);
-
-            var array = dict.ToArray();
-            var sorted = dict.Values.ToList();
-            
-            sorted.Sort();
-            foreach (var min in sorted)
+            var array = dict.ToArray().ToList();
+            array.Sort((a, b) =>
             {
-                //var index = dict.Values.IndexOf()
-                //info.CurrentLocation.Plus(dict[min]);
-                //if ()
+                if (a.Key < b.Key) return -1;
+                if (a.Key > b.Key) return 1;
+                return 0;
+            });
+            var sorted = dict.Values.ToList();
+
+            sorted.Sort();
+            foreach (var cur in array)
+            {
+                if (checker.CanMove(cur.Key, currentLocation, info))
+                    return cur.Key;
             }
 
-            return DirectionEnum.West;
+            return DirectionEnum.East;
+
         }
 
-        void Test()
-        {
-        }
-        
     }
+
 }
+

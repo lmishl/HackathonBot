@@ -71,7 +71,7 @@ namespace FirstBot
             return new HttpRequestMessage
             {
                 RequestUri = new Uri(uri),
-                Method = HttpMethod.Post,
+                Method = method,
                 Content = new StringContent(content, Encoding.UTF8, "application/json"),
                 Headers = { { "Authorization", $"{Authorization}" } }
             };
