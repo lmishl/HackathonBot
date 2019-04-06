@@ -12,7 +12,9 @@ namespace FirstBot
     {
         DirectionEnum lastDir = DirectionEnum.West;
 
-        public DirectionEnum Solve(PlayerSessionInfo info, TurnResult turn)
+
+
+        public (DirectionEnum, int) Solve(PlayerSessionInfo info, TurnResult turn, List<Location> visited)
         {
             Location currentLocation = info.CurrentLocation;
             if (turn != null)
@@ -20,6 +22,8 @@ namespace FirstBot
             var sosedi = info.NeighbourCells;
             if (turn != null)
                 sosedi = turn.VisibleCells;
+            var speed = info.CurrentSpeed;
+
 
             var checker = new MovementChecker();
 
@@ -32,14 +36,69 @@ namespace FirstBot
                 if (a.Value > b.Value) return 1;
                 return 0;
             });
-            
-            foreach (var cur in array)
+
+            //go to good dir
+
+            var dir = array[0];
+            if (!dir.Key.Equals(lastDir))
             {
-                if (checker.CanMove(cur.Key, currentLocation, sosedi, 4))
-                    return cur.Key;
+                var movementState = checker.CanMoveWithPit(dir.Key, currentLocation, sosedi, speed.Value);
+                if (movementState.IsCanMove)
+                {
+                    lastDir = dir.Key.Next().Next().Next();
+                    return (dir.Key, movementState.Acceleration);
+                }
             }
 
-            return DirectionEnum.East;
+            //go snova
+            var dirq = lastDir.Next().Next().Next();
+            if (!dirq.Equals(lastDir))
+            {
+                var movementState = checker.CanMoveWithPit(dirq, currentLocation, sosedi, speed.Value);
+                if (movementState.IsCanMove)
+                {
+                    lastDir = dirq.Next().Next().Next();
+                    return (dirq, movementState.Acceleration);
+                }
+            }
+
+            //unvisited
+            foreach (var cur in array.Where(q =>
+            {
+                var w = currentLocation.Plus(Constants.Deltas[q.Key]);
+                return visited.Any(a => a.Equals(w)) == false;
+            })) 
+            {
+                if (cur.Key.Equals(lastDir))
+                    continue;
+                var movementState = checker.CanMoveWithPit(cur.Key, currentLocation, sosedi, speed.Value);
+                if (movementState.IsCanMove)
+                {
+                    lastDir = cur.Key.Next().Next().Next();
+                    return (cur.Key, movementState.Acceleration);
+                }
+
+            }
+
+
+            //go na poher
+
+
+
+            foreach (var cur in array)
+            {
+                if (cur.Key.Equals(lastDir))
+                    continue;
+                var movementState = checker.CanMoveWithPit(cur.Key, currentLocation, sosedi, speed.Value);
+                if (movementState.IsCanMove)
+                {
+                    lastDir = cur.Key.Next().Next().Next();
+                    return (cur.Key, movementState.Acceleration);
+                }
+                    
+            }
+            lastDir = DirectionEnum.West;
+            return (DirectionEnum.East, 0);
 
         }
 

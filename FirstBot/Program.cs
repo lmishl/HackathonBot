@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IO.Swagger.Model;
+using System;
+using System.Collections.Generic;
 using static IO.Swagger.Model.TurnResult;
 
 namespace FirstBot
@@ -7,14 +9,19 @@ namespace FirstBot
     {
         static void Main(string[] args)
         {
+            var visited = new List<Location>();
             var service = new GameService();
             var info = service.CreateRace("test").Result;
             var q = info.CurrentDirection;
             var solver = new Solver();
-            var turnResult = service.Move(info.SessionId, solver.Solve(info, null), 30).Result;
+            var solution = solver.Solve(info, null, visited);
+            var turnResult = service.Move(info.SessionId,solution.Item1 , 30).Result;
             while (turnResult.Status != StatusEnum.HappyAsInsane && turnResult.Status != StatusEnum.Punished)
             {
-                turnResult = service.Move(info.SessionId, solver.Solve2(info, turnResult), turnResult.Speed>50? -30:30).Result;
+                visited.Add(info.CurrentLocation);
+                solution = solver.Solve(info, turnResult, visited);
+                var acc = solution.Item2 == 0 ? 50 - info.CurrentSpeed.Value : solution.Item2;
+                turnResult = service.Move(info.SessionId, solution.Item1, acc).Result;
                 info = service.GetCurrentState(info.SessionId).Result;
             }
         }
