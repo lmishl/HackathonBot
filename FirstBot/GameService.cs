@@ -11,7 +11,7 @@ namespace FirstBot
 {
     public class GameService
     {
-        private HttpClient client {get; }
+        private HttpClient client {get; set; }
 
         private const string ServerName = "http://51.15.100.12:5000";
 
@@ -28,7 +28,7 @@ namespace FirstBot
 
             var createRace = new CreateRaceDto(mapName);
 
-            var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Post, createRace.ToString()));
+            var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Post, createRace.ToJson()));
 
             var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
 
@@ -43,7 +43,7 @@ namespace FirstBot
 
              var turnModel = new TurnModel(dirrection, acceleration);
 
-             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToString()));
+             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToJson()));
          
              var turnResultJson = await response.Content.ReadAsStringAsync();
 
@@ -54,7 +54,7 @@ namespace FirstBot
 
         private HttpRequestMessage CreateHttpRequest(string uri, HttpMethod method, string content )
         {
-            return new HttpRequestMessage()
+            return new HttpRequestMessage
             {
                 RequestUri = new Uri(uri),
                 Method = HttpMethod.Post,
