@@ -20,7 +20,6 @@ namespace FirstBot
             }
 
             return dict;
-            
         }
 
 
