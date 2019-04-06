@@ -23,7 +23,7 @@ namespace FirstBot
 
         public async Task<PlayerSessionInfo> CreateRace(string mapName)
         {
-            var uri = $"{ServerName}/receapi/race/";
+            var uri = $"{ServerName}/raceapi/race/";
 
             var createRace = new CreateRaceDto(mapName);
 

@@ -6,7 +6,9 @@ namespace FirstBot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var service = new GameService();
+            var info = service.CreateRace("test").Result;
+            var q = info.CurrentDirection;
         }
     }
 }
