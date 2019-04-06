@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using IO.Swagger.Model;
 using Newtonsoft.Json;
+using static IO.Swagger.Model.TurnModel;
 
 namespace FirstBot
 {
     public class GameService
     {
-        private HttpClient client {get; set;}
+        private HttpClient client {get; }
 
         private const string ServerName = "http://51.15.100.12:5000";
 
@@ -27,15 +28,7 @@ namespace FirstBot
 
             var createRace = new CreateRaceDto(mapName);
 
-            var createRasejson = JsonConvert.SerializeObject(createRace);
-
-            var response = await client.SendAsync(new HttpRequestMessage()
-            {
-                RequestUri = new Uri(uri),
-                Method = HttpMethod.Post,
-                Content = new StringContent(createRasejson, Encoding.UTF8, "application/json"),
-                Headers = { { "Authorization", $"{Authorization}" } }
-            });
+            var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Post, createRace.ToString()));
 
             var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
 
@@ -44,21 +37,30 @@ namespace FirstBot
             return playerSessionInfo;
         }
 
-        public void GetHelpMath()
+        public async Task<TurnResult> Move (string sessionId, DirectionEnum dirrection, int acceleration)
         {
-            // var uri = $"/receapi/race/";
+             var uri = $"{ServerName}/raceapi/race/{sessionId}";
 
-            // var createRace = new CreateRaceDto(mapName);
+             var turnModel = new TurnModel(dirrection, acceleration);
 
-            // var createRasejson = JsonConvert.SerializeObject(createRace);
+             var response = await client.SendAsync(CreateHttpRequest(uri, HttpMethod.Put, turnModel.ToString()));
+         
+             var turnResultJson = await response.Content.ReadAsStringAsync();
 
-            // var response = await client.PostAsync(uri, new StringContent(createRasejson, Encoding.UTF8, "application/json"));
+             var turnResult = JsonConvert.DeserializeObject<TurnResult>(turnResultJson); 
 
-            // var playerSessionInfoJson = await response.Content.ReadAsStringAsync();
+             return turnResult;
+        }
 
-            // var playerSessionInfo = JsonConvert.DeserializeObject<PlayerSessionInfo>(playerSessionInfoJson); 
-
-            // return playerSessionInfo;
+        private HttpRequestMessage CreateHttpRequest(string uri, HttpMethod method, string content )
+        {
+            return new HttpRequestMessage()
+            {
+                RequestUri = new Uri(uri),
+                Method = HttpMethod.Post,
+                Content = new StringContent(content, Encoding.UTF8, "application/json"),
+                Headers = { { "Authorization", $"{Authorization}" } }
+            };
         }
     }
 }
